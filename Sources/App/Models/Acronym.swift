@@ -21,8 +21,21 @@ extension Acronym: Model {
     public static var idKey: IDKey = \Acronym.id
 }
 
-extension Acronym: Migration {}
+extension Acronym: Migration {
+    static func prepare(on connection: PostgreSQLConnection) -> Future<Void> {
+        return Database.create(self, on: connection) { builder in
+            try addProperties(to: builder)
+            builder.reference(from: \.userID, to: \User.id)
+        }
+    }
+}
 
 extension Acronym: Content {}
 
 extension Acronym: Parameter {}
+
+extension Acronym {
+    var user: Parent<Acronym, User> {
+        return parent(\.userID)
+    }
+}
