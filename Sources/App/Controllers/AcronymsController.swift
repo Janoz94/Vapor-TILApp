@@ -5,7 +5,6 @@ import Fluent
 struct AcronymsController: RouteCollection {
     func boot(router: Router) throws {
         let acronymsRoutes = router.grouped("api", "acronyms")
-        router.get("api", "acronyms", use: getAllHandler)
         
         acronymsRoutes.get(use: getAllHandler)
         acronymsRoutes.post(Acronym.self, use: createHandler)
@@ -33,6 +32,7 @@ struct AcronymsController: RouteCollection {
         return try flatMap(to: Acronym.self, req.parameters.next(Acronym.self), req.content.decode(Acronym.self)) { acronym, updatedAcronym in
             acronym.short = updatedAcronym.short
             acronym.long = updatedAcronym.long
+            acronym.userID = updatedAcronym.userID
             return acronym.save(on: req)
         }
     }
