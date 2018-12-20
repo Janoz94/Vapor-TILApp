@@ -100,7 +100,7 @@ struct AcronymsController: RouteCollection {
     
     func removeCategoriesHandler(_ req: Request) throws -> Future<HTTPStatus> {
         return try flatMap(to: HTTPStatus.self, req.parameters.next(Acronym.self), req.parameters.next(Category.self)) { acronym, category in
-            return acronym.categories.detach(category, on: req).transform(to: .nooContent)
+            return acronym.categories.detach(category, on: req).transform(to: .noContent)
         }
     }
 }
