@@ -20,7 +20,7 @@ final class UserTests: XCTestCase {
         conn.close()
     }
     
-    func testUsersCanBeRetrivedFromAPI() throws {
+    func testUsersCanBeRetrievedFromAPI() throws {
         let user = try User.create(name: usersName, username: usersUsername, on: conn)
         _ = try User.create(on: conn)
         
@@ -70,4 +70,14 @@ final class UserTests: XCTestCase {
         XCTAssertEqual(acronyms[0].short, acronymShort)
         XCTAssertEqual(acronyms[0].long, acronymLong)
     }
+    
+    static let allTests = [
+        ("testUsersCanBeRetrievedFromAPI",
+         testUsersCanBeRetrievedFromAPI),
+        ("testUserCanBeSavedWithAPI", testUserCanBeSavedWithAPI),
+        ("testGettingASingleUserFromTheAPI",
+         testGettingASingleUserFromTheAPI),
+        ("testGettingAUsersAcronymsFromTheAPI",
+         testGettingAUsersAcronymsFromTheAPI)
+    ]
 }
