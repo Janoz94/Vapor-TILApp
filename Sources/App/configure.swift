@@ -20,7 +20,6 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     /// Register the configured mySQL database to the database config.
     var databases = DatabasesConfig()
     let databaseConfig: PostgreSQLDatabaseConfig
-    
     if let url = Environment.get("DATABASE_URL") {
         guard let urlConfig = PostgreSQLDatabaseConfig(url: url) else {
             fatalError("Failed to create PostgresConfig")
@@ -52,7 +51,6 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
         let password = Environment.get("DATABASE_PASSWORD") ?? "password"
         databaseConfig = PostgreSQLDatabaseConfig(hostname: hostname, port: databasePort, username: username, database: databaseName, password: password)
     }
-    
     let database = PostgreSQLDatabase(config: databaseConfig)
     databases.add(database: database, as: .psql)
     services.register(databases)
