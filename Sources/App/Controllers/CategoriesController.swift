@@ -29,4 +29,5 @@ struct CategoriesController: RouteCollection {
             try category.acronyms.query(on: req).all()
         }
     }
+    
 }
