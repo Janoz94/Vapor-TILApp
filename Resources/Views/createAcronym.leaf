@@ -15,13 +15,15 @@ id="long" #if(editing){value="#(acronym.long)"}/>
 <label for="userID">User</label>
 <select name="userID" class="form-control" id="userID">
 #for(user in users) {
-<option value="#(user.id)">
+<option value="#(user.id)"
+#if(editing){#if(acronym.userID == user.id){selected}}>
 #(user.name)
-</option> }
+</option>
+}
 </select>
 </div>
 <button type="submit" class="btn btn-primary">
-Submit
+#if(editing){Update} else{Submit}
 </button>
 </form>
 }
