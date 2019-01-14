@@ -1,13 +1,13 @@
 import Vapor
 import Fluent
-
+import Authentication
 
 struct AcronymsController: RouteCollection {
     func boot(router: Router) throws {
         let acronymsRoutes = router.grouped("api", "acronyms")
         
         acronymsRoutes.get(use: getAllHandler)
-        acronymsRoutes.post(Acronym.self, use: createHandler)
+//        acronymsRoutes.post(Acronym.self, use: createHandler)
         acronymsRoutes.get(Acronym.parameter, use: getHandler)
         acronymsRoutes.put(Acronym.parameter, use: updateHandler)
         acronymsRoutes.delete(Acronym.parameter, use: deleteHandler)
@@ -18,6 +18,11 @@ struct AcronymsController: RouteCollection {
         acronymsRoutes.post(Acronym.parameter, "categories", Category.parameter, use: addCategoriesHandler)
         acronymsRoutes.get(Acronym.parameter, "categories", use: getCategoriesHandler)
         acronymsRoutes.delete(Acronym.parameter, "categories", Category.parameter, use: removeCategoriesHandler)
+        
+        let basicAuthMiddleware = User.basicAuthMiddleware(using: BCryptDigest())
+        let guardAuthMiddleware = User.guardAuthMiddleware()
+        let protected = acronymsRoutes.grouped(basicAuthMiddleware, guardAuthMiddleware)
+        protected.post(Acronym.self, use: createHandler)
     }
     
     
@@ -75,12 +80,12 @@ struct AcronymsController: RouteCollection {
         return Acronym.query(on: req).sort(\.short, .ascending).all()
     }
     
-    func getUserHandler(_ req: Request) throws -> Future<User> {
+    func getUserHandler(_ req: Request) throws -> Future<User.Public> {
         return try req
             .parameters
             .next(Acronym.self)
-            .flatMap(to: User.self) { acronym in
-                acronym.user.get(on: req)
+            .flatMap(to: User.Public.self) { acronym in
+                acronym.user.get(on: req).convertToPublic()
         }
     }
     
