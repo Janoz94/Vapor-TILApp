@@ -17,7 +17,8 @@ let package = Package(
                                "Vapor",
                                "Leaf",
                                "Authentication",
-                               "Imperial"]),
+                               "Imperial",
+                               "VaporExt"]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: ["App"]),
         ]
