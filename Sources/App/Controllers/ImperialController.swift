@@ -6,7 +6,7 @@ import VaporExt
 
 struct ImperialController: RouteCollection {
     func boot(router: Router) throws {
-        Environment.dotenv()
+//        Environment.dotenv()
         
         let callbackURL = Environment.get("GOOGLE_CALLBACK_URL", "")
         if callbackURL == ""  {
