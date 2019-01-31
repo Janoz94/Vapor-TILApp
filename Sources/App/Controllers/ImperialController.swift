@@ -1,15 +1,13 @@
 import Vapor
 import Imperial
 import Authentication
-import VaporExt
 
 
 struct ImperialController: RouteCollection {
     func boot(router: Router) throws {
 //        Environment.dotenv()
         
-        let callbackURL = Environment.get("GOOGLE_CALLBACK_URL", "")
-        if callbackURL == ""  {
+        guard let callbackURL = Environment.get("GOOGLE_CALLBACK_URL") else {
             fatalError("Callback URL not set")
         }
         try router.oAuth(from: Google.self, authenticate: "login-google", callback: callbackURL, scope: ["profile", "email"], completion: processGoogleLogin)
