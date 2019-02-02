@@ -5,7 +5,6 @@ import Authentication
 
 struct ImperialController: RouteCollection {
     func boot(router: Router) throws {
-        Environment.dotenv()
         
         guard let callbackURL = Environment.get("GOOGLE_CALLBACK_URL") else {
             fatalError("Callback URL not set")
